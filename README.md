@@ -1,6 +1,6 @@
 # Stripeflare
 
-Minimal demo to add Stripe Payments to a Cloduflare Worker
+Minimal demo to add Stripe Payments to a Cloudflare Worker
 
 [![uithub.com](https://www.google.com/s2/favicons?domain=uithub.com&sz=16) 1600 tokens](https://uithub.com/janwilmake/stripeflare)
 
