@@ -2,3 +2,4 @@
 node_modules
 .git
 .dev.vars
+package-lock.json
