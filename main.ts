@@ -7,20 +7,6 @@ type Env = {
   STRIPE_PAYMENT_LINK_ID: string;
 };
 
-const updateSubscribed = async (data: Stripe.Subscription) => {
-  const shouldRemoveSubscription =
-    data.status === "unpaid" || data.status === "canceled";
-
-  if (!shouldRemoveSubscription) {
-    return { status: 200, message: "No action required" };
-  }
-
-  return {
-    status: 200,
-    message: `Removed from subscribers (they had credits before removal)`,
-  };
-};
-
 const streamToBuffer = async (
   readableStream: ReadableStream<Uint8Array>,
 ): Promise<Uint8Array> => {
@@ -65,6 +51,11 @@ const streamToBuffer = async (
  */
 export default {
   fetch: async (request: Request, env: Env) => {
+    const url = new URL(request.url);
+    if (url.pathname !== "/stripe-webhook") {
+      return new Response("Not a stripe webhook", { status: 404 });
+    }
+
     if (!request.body) {
       return new Response(
         JSON.stringify({ isSuccessful: false, message: "No body" }),
@@ -175,7 +166,7 @@ export default {
         `Not implemented yet, but ${name} <${email}> paid ${amount_total} cents`,
       );
 
-      // Do something here in your KV or DO or whatever, or even just sent an email.....
+      // Do something here in your KV or DO or whatever, or even just sent an email..
       return new Response(
         `Not implemented yet, but ${name} <${email}> paid ${amount_total} cents`,
       );
@@ -187,17 +178,24 @@ export default {
       event.type === "customer.subscription.updated" ||
       event.type === "customer.subscription.paused"
     ) {
-      const result = await updateSubscribed(event.data.object);
+      const subscription = event.data.object;
 
-      return new Response(JSON.stringify(result), {
+      const shouldRemoveSubscription =
+        subscription.status === "unpaid" || subscription.status === "canceled";
+
+      if (!shouldRemoveSubscription) {
+        return new Response("OK. No action required");
+      }
+
+      // Do something here to handle the subscription cancellation
+      return new Response("Deleted, cancelled, or paused", {
         headers: { "Content-Type": "application/json" },
       });
     }
     // Not interested in all other events...
     if (isDebugInput) {
       console.log("UNHANLDED EVENT", event.type);
-    } //event.data.object
-    // //console.log("OTHER EVENT", event.type);
+    }
 
     return new Response(
       JSON.stringify({ isSuccessful: false, message: "Invalid event" }),
