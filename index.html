@@ -1,12 +1,31 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
-<body>
-    <script async src="https://js.stripe.com/v3/buy-button.js">
-    </script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Payments in Cloudflare Workers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+</head>
 
-    <stripe-buy-button buy-button-id="buy_btn_1REsM3HdjTpW3q7ir46YIEPf"
-        publishable-key="pk_live_51OByVPHdjTpW3q7iqVMf1htAJOQ9If61YZYQlDMc2vhx0XSgqu4Tpfpb6t4pRFJDWhJ7ZqdwMsnQn9RtDuztnnQA00NorRRKLl">
-    </stripe-buy-button>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
+        <h1 class="text-3xl font-bold mb-8 text-gray-800">Simple Payments in Cloudflare Workers</h1>
+
+        <div class="mb-8">
+            <stripe-buy-button buy-button-id="buy_btn_1REsM3HdjTpW3q7ir46YIEPf"
+                publishable-key="pk_live_51OByVPHdjTpW3q7iqVMf1htAJOQ9If61YZYQlDMc2vhx0XSgqu4Tpfpb6t4pRFJDWhJ7ZqdwMsnQn9RtDuztnnQA00NorRRKLl">
+            </stripe-buy-button>
+        </div>
+
+    </div>
+    <div class="absolute top-4 left-4">
+        <iframe
+            src="https://ghbtns.com/github-btn.html?user=janwilmake&repo=stripeflare&type=star&count=true&size=large"
+            frameborder="0" scrolling="0" width="170" height="30" title="GitHub">
+        </iframe>
+    </div>
 </body>
 
 </html>
