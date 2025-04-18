@@ -2,7 +2,7 @@
 
 Minimal demo to add Stripe Payments to a Cloudflare Worker
 
-[![uithub.com](https://www.google.com/s2/favicons?domain=uithub.com&sz=16) 1600 tokens](https://uithub.com/janwilmake/stripeflare)
+[![janwilmake/stripeflare context](https://badge.forgithub.com/janwilmake/stripeflare)](https://uithub.com/janwilmake/stripeflare)
 
 # Setup
 
