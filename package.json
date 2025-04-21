@@ -1,5 +1,41 @@
 {
+  "_comments": [
+    "--- package.json 文件说明 ---",
+    "这是 Node.js 项目的标准配置文件，用于管理项目的元数据和依赖项。",
+    "它由 npm (Node Package Manager) 或 yarn 等包管理工具使用。",
+    "主要作用包括：",
+    "  - 列出项目运行或开发所需的第三方库 (依赖项)。",
+    "  - 定义项目的基本信息（名称、版本等，虽然这里省略了）。",
+    "  - 指定可运行的脚本命令 (例如启动、测试、构建等，这里也省略了)。"
+  ],
   "dependencies": {
-    "stripe": "^18.0.0"
-  }
+    "_comments": [
+      "--- dependencies (生产依赖) ---",
+      "这个部分列出了项目在 *生产环境* 运行时所必需的第三方库。",
+      "当你的 Cloudflare Worker 部署并运行时，这些库的代码会被包含进去。",
+      "这里的包会在运行 `npm install` 或 `yarn install` 时被下载安装。"
+    ],
+    "stripe": "^18.0.0",
+    "_stripe_comment": [
+      "--- stripe ---",
+      "这是官方的 Stripe Node.js 库。",
+      "我们用它来：",
+      "  1. 与 Stripe API 进行交互。",
+      "  2. 最重要的是，验证收到的 webhook 请求的签名 (使用 `stripe.webhooks.constructEvent`)，确保请求确实来自 Stripe 而不是恶意第三方。",
+      "版本号 `^18.0.0` 的含义：",
+      "  - `^` (Caret): 表示允许安装此主版本内的最新次版本或补丁版本 (例如 18.1.0, 18.0.1 都可以)，但 *不会* 安装下一个主版本 (例如 19.0.0)。",
+      "  - 这是一种常见的版本锁定策略，既能获得小更新和修复，又能避免因大版本更新带来的破坏性变更。"
+    ]
+  },
+  "_devDependencies_comment": [
+    "--- devDependencies (开发依赖，此项目暂无) ---",
+    "如果项目有开发依赖 (例如 TypeScript、linters、测试框架等)，它们会列在 'devDependencies' 字段下。",
+    "这些库只在开发过程中需要，例如编译代码、运行测试、格式化代码等，*不会* 被打包到最终的生产部署包中。",
+    "示例: ",
+    "\"devDependencies\": {",
+    "  \"typescript\": \"^5.0.0\",",
+    "  \"wrangler\": \"^3.0.0\", ",
+    "  \"@cloudflare/workers-types\": \"^4.0.0\"",
+    "}"
+  ]
 }

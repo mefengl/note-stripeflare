@@ -1,11 +1,69 @@
+// wrangler.jsonc - Cloudflare Wrangler 配置文件
+// 这个文件用于配置 Wrangler CLI 工具，它负责本地开发、预览和部署 Cloudflare Workers。
 {
+  // --- Worker 名称 ---
+  // 定义了你的 Worker 在 Cloudflare Dashboard 中以及通过 API 交互时的唯一名称。
+  // 通常建议使用小写字母、数字和连字符。
   "name": "stripeflare",
-  "dev": { "port": 3000 },
+
+  // --- 本地开发设置 ---
+  // 配置 `wrangler dev` 命令的行为。
+  "dev": { 
+    // 指定本地开发服务器监听的端口号。
+    // 运行 `wrangler dev` 后，你可以通过 http://localhost:3000 访问你的 Worker。
+    "port": 3000 
+  },
+
+  // --- 兼容性日期 ---
+  // !! 非常重要 !!
+  // 这个日期决定了你的 Worker 使用哪个版本的 Cloudflare Workers 运行时 API。
+  // Cloudflare 会不时更新运行时，引入新功能或改变现有行为。
+  // 设置一个兼容性日期可以确保你的 Worker 代码在未来的运行时更新中不会意外中断，
+  // 因为它会继续使用指定日期或之前的 API 行为。
+  // 当你准备好采用新特性或适应行为变更时，可以更新这个日期。
+  // 通常设置为你开始项目或上次审查兼容性时的日期。
   "compatibility_date": "2025-04-17",
-  "assets": { "directory": "./" },
+
+  // --- 静态资源配置 ---
+  // 允许你的 Worker 直接提供静态文件服务（例如 HTML, CSS, JS, 图片）。
+  // 这对于托管简单的网站前端或管理页面非常有用。
+  "assets": { 
+    // 指定包含静态资源的本地目录。
+    // Wrangler 会将这个目录的内容上传，并让 Worker 可以访问它们。
+    // 设置为 "./" 表示项目根目录下的所有文件（除了被 .wranglerignore 排除的）都可能被视为静态资源。
+    // 通常更推荐指定一个专门的子目录，例如 "./public" 或 "./static"。
+    "directory": "./" 
+  },
+
+  // --- Worker 入口点 ---
+  // 指定包含 Worker 主要逻辑的 TypeScript (或 JavaScript) 文件。
+  // 这是 Wrangler 开始构建和打包你的 Worker 代码的地方。
   "main": "./main.ts",
+
+  // --- 路由配置 ---
+  // 定义哪些传入的 HTTP 请求应该被路由到这个 Worker 来处理。
+  // 你可以配置多个路由规则。
   "routes": [
-    { "pattern": "stripeflare.com", "custom_domain": true },
-    { "pattern": "www.stripeflare.com", "custom_domain": true }
+    // 每个对象代表一个路由规则。
+    { 
+      // URL 匹配模式。可以使用通配符 (*)。
+      // 这个模式会与请求的 URL (主机名 + 路径) 进行匹配。
+      "pattern": "stripeflare.com", 
+      // 表示这个 `pattern` 是你在 Cloudflare DNS 中配置的自定义域名，而不是 workers.dev 子域。
+      "custom_domain": true 
+    },
+    { 
+      "pattern": "www.stripeflare.com", 
+      "custom_domain": true 
+    }
+    // 你还可以添加基于 workers.dev 子域的路由，例如：
+    // { "pattern": "my-worker-name.my-account.workers.dev/*" } 
+    // 这种情况下通常省略 `custom_domain` 或设为 `false`。
   ]
+  
+  // --- 其他常用配置 (此项目未使用) ---
+  // "vars": { "MY_VARIABLE": "value" }, // 定义环境变量 (非 secrets)
+  // "kv_namespaces": [ { "binding": "MY_KV", "id": "..." } ], // 绑定 KV 命名空间
+  // "durable_objects": { "bindings": [ { "name": "MY_DO", "class_name": "MyDurableObject" } ] }, // 绑定 Durable Objects
+  // "secrets": [ "STRIPE_SECRET_KEY" ], // 提示 wrangler 需要绑定哪些 secrets (值需要在 Dashboard 或通过 `wrangler secret put` 设置)
 }

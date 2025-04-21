@@ -1,31 +1,90 @@
-<!DOCTYPE html>
-<html lang="en">
+<!--
+  这是一个 HTML 文件，就像网页的“骨架”。
+  它告诉浏览器如何显示内容，比如文字、图片和按钮。
+  这个特定的页面是为了展示一个 Stripe 付款按钮，让用户可以方便地付款。
+  它使用了 Tailwind CSS 来美化页面，让它看起来更整洁漂亮。
+-->
+<!DOCTYPE html> <!-- 这是文档类型声明，告诉浏览器这是一个 HTML5 文件 -->
+<html lang="en"> <!-- html 标签是整个页面的根，lang="en" 表示页面主要语言是英语 -->
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Payments in Cloudflare Workers</title>
+<head> <!-- head 部分包含页面的元信息，这些信息不会直接显示给用户看，但对浏览器和搜索引擎很重要 -->
+    <meta charset="UTF-8"> <!-- 这个 meta 标签指定了页面使用的字符编码是 UTF-8。UTF-8 包含了世界上几乎所有的字符，这样中文、英文等都能正确显示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 这个 meta 标签是为移动设备优化的。它告诉浏览器页面的宽度应该等于设备的屏幕宽度 (width=device-width)，初始缩放比例是 1.0 (initial-scale=1.0)，这样在手机上看页面效果会更好 -->
+    <title>Simple Payments in Cloudflare Workers</title> <!-- title 标签里的内容会显示在浏览器的标签页上 -->
+    
+    <!-- 引入外部的 CSS 样式文件。这里用的是 Tailwind CSS 的 CDN。 -->
+    <!-- Tailwind CSS 是一个工具集，提供很多预设好的样式类（比如 bg-gray-100, text-3xl），让我们可以快速构建漂亮的界面，而不用写很多 CSS 代码。 -->
+    <!-- 把样式表放在 head 里，浏览器会先加载样式，这样页面显示的时候就不会出现先是没样式后来突然变漂亮的情况。 -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 引入 Stripe 的 Buy Button JavaScript 文件。 -->
+    <!-- 这个脚本是 Stripe 官方提供的，它能识别页面中的 <stripe-buy-button> 标签，并把它变成一个真正可以点击付款的按钮。 -->
+    <!-- async 属性表示这个脚本会异步加载，不会阻塞页面的其他部分渲染，提高了页面加载速度。 -->
     <script async src="https://js.stripe.com/v3/buy-button.js"></script>
 </head>
 
+<!-- body 标签包含了所有用户能直接看到的内容 -->
+<!-- class="..." 里面是 Tailwind CSS 的样式类，用来设置页面的外观 -->
+<!-- bg-gray-100: 设置背景颜色为浅灰色 -->
+<!-- min-h-screen: 设置最小高度为整个屏幕的高度 -->
+<!-- flex: 启用 Flexbox 布局模型，方便对子元素进行排列 -->
+<!-- flex-col: 让子元素垂直排列 -->
+<!-- items-center: 让子元素在交叉轴（这里是水平方向）上居中 -->
+<!-- justify-center: 让子元素在主轴（这里是垂直方向）上居中 -->
+<!-- p-4: 设置内边距为 4 个单位 (padding) -->
 <body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+    
+    <!-- 这是一个主要的 div 容器，用来包裹页面的核心内容 -->
+    <!-- max-w-md: 设置最大宽度为中等 (medium) -->
+    <!-- w-full: 设置宽度为 100% (在其父容器允许的最大宽度内) -->
+    <!-- bg-white: 设置背景颜色为白色 -->
+    <!-- rounded-lg: 设置边角为大圆角 -->
+    <!-- shadow-md: 添加中等大小的阴影效果 -->
+    <!-- p-8: 设置较大的内边距 -->
+    <!-- text-center: 让内部的文本居中显示 -->
     <div class="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
+        
+        <!-- 页面主标题 -->
+        <!-- h1 是最重要的标题标签 -->
+        <!-- text-3xl: 设置字体大小为 3xl (extra large) -->
+        <!-- font-bold: 设置字体为粗体 -->
+        <!-- mb-8: 设置下外边距 (margin-bottom) -->
+        <!-- text-gray-800: 设置文字颜色为深灰色 -->
         <h1 class="text-3xl font-bold mb-8 text-gray-800">Simple Payments in Cloudflare Workers</h1>
 
+        <!-- 这个 div 用来放置 Stripe 的支付按钮 -->
+        <!-- mb-8: 设置下外边距 -->
         <div class="mb-8">
-            <stripe-buy-button buy-button-id="buy_btn_1REsM3HdjTpW3q7ir46YIEPf"
+            <!-- 这是 Stripe 提供的自定义 HTML 元素 (Web Component) -->
+            <!-- 当浏览器加载了上面的 Stripe JS 文件后，这个标签就会被转换成一个支付按钮 -->
+            <!-- buy-button-id: 这是你在 Stripe 后台创建的支付链接 (Payment Link) 的 ID。它告诉 Stripe 这个按钮对应哪个产品或服务。'buy_btn_...' 是旧格式，现在通常是 'plink_...' -->
+            <!-- publishable-key: 这是你的 Stripe 账户的可发布密钥 (Publishable Key)。它是公开的，用来在前端识别你的账户，并初始化 Stripe 功能。注意：这只是可发布密钥，不是私密密钥 (Secret Key)，所以放在前端是安全的。 -->
+            <stripe-buy-button buy-button-id="buy_btn_1REsM3HdjTpW3q7ir46YIEPf" 
                 publishable-key="pk_live_51OByVPHdjTpW3q7iqVMf1htAJOQ9If61YZYQlDMc2vhx0XSgqu4Tpfpb6t4pRFJDWhJ7ZqdwMsnQn9RtDuztnnQA00NorRRKLl">
+                <!-- 这个标签内部通常是空的，Stripe JS 会自动填充内容 -->
             </stripe-buy-button>
         </div>
 
-    </div>
+    </div> <!-- 主要内容容器 div 结束 -->
+    
+    <!-- 这个 div 用来放置 GitHub 的 Star 按钮 -->
+    <!-- absolute: 使用绝对定位，让它可以脱离正常的文档流，放在指定位置 -->
+    <!-- top-4: 定位在距离顶部 4 个单位的位置 -->
+    <!-- left-4: 定位在距离左边 4 个单位的位置 -->
     <div class="absolute top-4 left-4">
+        <!-- iframe 是一个内联框架，可以在当前页面里嵌入另一个网页 -->
+        <!-- src: 指定了要嵌入的网页地址，这里是 GitHub Buttons 提供的官方按钮页面 -->
+        <!-- user=janwilmake&repo=stripeflare: 参数指定了是哪个用户的哪个仓库 -->
+        <!-- type=star&count=true&size=large: 参数配置了按钮的样式（显示 Star 数量，大尺寸） -->
+        <!-- frameborder="0": 不显示边框 -->
+        <!-- scrolling="0": 禁止滚动条 -->
+        <!-- width/height: 设置 iframe 的尺寸 -->
+        <!-- title="GitHub": 为 iframe 提供一个描述，有助于可访问性 -->
         <iframe
             src="https://ghbtns.com/github-btn.html?user=janwilmake&repo=stripeflare&type=star&count=true&size=large"
             frameborder="0" scrolling="0" width="170" height="30" title="GitHub">
         </iframe>
     </div>
-</body>
+</body> <!-- body 结束 -->
 
-</html>
+</html> <!-- html 结束 -->
